@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'orders'], function(){	
+	Route::get('/', 'OrderController@index')->name('order.get');
+
+	Route::post('/', 'OrderController@save')->name('order.save');
+
+	Route::put('/{id}', 'OrderController@update')->name('order.update');
+});
