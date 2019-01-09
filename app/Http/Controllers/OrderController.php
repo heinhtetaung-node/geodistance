@@ -3,16 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Service\MapService;
 
 class OrderController extends Controller
 {
+    private $mapService;
+
+    /**
+     * OrderController constructor.
+     */
+    public function __construct(MapService $mapService)
+    {
+        $this->mapService = $mapService;
+    }
+
     /**
 	 * Api for orders get /orders
 	 * @param page, limit
 	 * @return orders array
 	 */
     public function index(Request $request){
-    	// call api to this https://developer.here.com/documentation/routing/topics/resource-calculate-matrix.html
     	return $request->all();
     }
 
@@ -22,7 +32,12 @@ class OrderController extends Controller
 	 * @return orders array
 	 */
     public function save(Request $request){
-    	return $request->all();
+        $arr = $request->all();
+        $data = $this->mapService->getDistanceBetweenTwoCoordinates($arr['origin'], $arr['destination']);
+        if(!isset($data->distances)){
+            return response($data)->setStatusCode(422);
+        }   
+        return (array)$data;        
     }
 
     /**
