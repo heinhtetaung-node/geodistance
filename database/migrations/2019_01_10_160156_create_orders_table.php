@@ -17,7 +17,8 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('start_coordinates',50);
             $table->string('end_coordinates',50);
-            $table->int('distance');            
+            $table->integer('distance');   
+            $table->enum('status', ['UNASSIGNED', 'TAKEN'])->default('UNASSIGNED');         
             $table->timestamps();
         });
     }

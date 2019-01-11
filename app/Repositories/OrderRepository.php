@@ -18,7 +18,7 @@ class OrderRepository
 	 * @param limit, offset
 	 */
 	public function getAll($arr){
-		return $this->model->latest->get();
+		return $this->model->select('id','distance','status')->latest()->paginate($arr['limit']);
 	}
 
 	/**
@@ -33,7 +33,8 @@ class OrderRepository
 		$arr = $this->model->create([
 			'start_coordinates' => $start_coordinates,
 			'end_coordinates' => $end_coordinates,
-			'distance' => $distance
+			'distance' => $distance,
+			'status' => 'UNASSIGNED'
 		]);
 		return $arr;
 	}
@@ -43,7 +44,7 @@ class OrderRepository
 	 */
 	public function updateOrder($arr, $id){
 		$order = $this->model->findOrFail($id);
-		$order = $order->update($arr);
+		$order = $order->update(['status' => 'TAKEN']);
 		return $order;
 	}
 }

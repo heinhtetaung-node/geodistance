@@ -36,6 +36,9 @@ class MapService
 		    $res = $this->mapbox->get($apilink);		    
 		    $res = json_decode($res->getBody()->getContents());		
 		} catch (RequestException $e) {
+			if($e->getResponse()==null){
+				return ['error' => 'api cannot connect'];	
+			}
 			$status_code = $e->getResponse()->getStatusCode();
 			if($status_code == 422){
 				return ['error' => 'please provide correct latitude and longitude'];

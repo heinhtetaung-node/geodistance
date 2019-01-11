@@ -11,6 +11,6 @@ class Orders extends Model
     protected $table = "orders";
 
     protected $fillable = [
-       'start_coordinates','end_coordinates','distance'
+       'start_coordinates','end_coordinates','distance','status'
     ];
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\MapService;
 use App\Repositories\OrderRepository;
+use App\Http\Requests\OrderGetRequest;
+use App\Http\Requests\OrderSaveRequest;
+use App\Http\Requests\OrderTakeRequest;
 
 class OrderController extends Controller
 {
@@ -25,9 +28,10 @@ class OrderController extends Controller
 	 * @param page, limit
 	 * @return orders array
 	 */
-    public function index(Request $request){
+    public function index(OrderGetRequest $request){
     	$arr = $request->all();
-        return $this->orderrepo->getAll($arr);
+        $res = $this->orderrepo->getAll($arr);
+        return $res->items(); 
     }
 
     /**
@@ -35,16 +39,16 @@ class OrderController extends Controller
 	 * @param order data
 	 * @return orders array
 	 */
-    public function save(Request $request){
+    public function save(OrderSaveRequest $request){
         $arr = $request->all();
         $data = $this->mapService->getDistanceBetweenTwoCoordinates($arr['origin'], $arr['destination']);
         if(!isset($data->distances)){
             return response($data)->setStatusCode(422);
         }   
         $distance = $data->distances[0][1];
-        $arr['distance'] = $distance;
+        $arr['distance'] = round($distance);
         $res = $this->orderrepo->createOrder($arr);
-        return $res;
+        return ['id' => $res->id, 'distance' => $res->distance, 'status' => $res->status];
     }
 
     /**
@@ -52,9 +56,12 @@ class OrderController extends Controller
 	 * @param id and update status
 	 * @return success response
 	 */
-    public function update($id, Request $request){
+    public function update($id, OrderTakeRequest $request){
     	$arr = $request->all();
         $res = $this->orderrepo->updateOrder($arr, $id);
-        return $res;
+        if($res==true){
+            return ['status' => 'SUCCESS'];    
+        }
+        return ['error' => 'Someting wrong in data processing'];
     }    
 }
