@@ -2,6 +2,9 @@
 
 # Comment
 
-composer install;
+composer install
+composer require predis/predis
 
-php artisan serve;
+docker-compose up -d
+docker-compose exec app php artisan key:generate
+docker-compose exec app php artisan migrate:refresh
