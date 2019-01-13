@@ -59,12 +59,12 @@ class OrderController extends Controller
     public function update($id, OrderTakeRequest $request){
     	$arr = $request->all();
         $res = $this->orderrepo->updateOrder($arr, $id);
-        if($res==true){
-            return ['status' => 'SUCCESS'];    
+		if($res==1){
+			return ['status' => 'SUCCESS'];
         }
         if($res=="TAKEN"){
             return response(['error' => 'Order is already taken'])->setStatusCode(422);
-        }
+		}
         return response(['error' => 'Someting wrong in data processing'])->setStatusCode(422);
-    }    
+    }
 }
