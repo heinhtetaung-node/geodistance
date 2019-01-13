@@ -18,7 +18,7 @@ class OrderRepository
 	 * @param limit, offset
 	 */
 	public function getAll($arr){
-		return $this->model->select('id','distance','status')->latest()->paginate($arr['limit']);
+		return $this->model->select('id','distance','status')->orderBy('id', 'desc')->paginate($arr['limit']);
 	}
 
 	/**
