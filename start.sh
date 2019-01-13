@@ -8,6 +8,7 @@ docker-compose exec app php artisan key:generate
 #run unit test
 docker-compose exec app vendor/bin/phpunit
 docker-compose exec app php artisan migrate:refresh
+chmod -R o+rw bootstrap/ storage/
 fi	
 else
 composer install
