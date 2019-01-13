@@ -18,9 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'orders'], function(){	
-	Route::get('/', 'OrderController@index')->name('order.get');
+	Route::get('/', 'OrderController@index')->name('order.all');
 
 	Route::post('/', 'OrderController@save')->name('order.save');
 
-	Route::put('/{id}', 'OrderController@update')->name('order.update');
+	Route::patch('/{id}', 'OrderController@update')->name('order.update');
 });
