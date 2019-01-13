@@ -1,11 +1,11 @@
 ## Project installation
 
-- composer install
-- composer require predis/predis
+# By Using Docker
+- docker-compose up -d
+- bash start.sh -d
+can run in localhost:8080 or MachineIP:8080
 
-- docker-compose up
-- docker-compose exec app php artisan key:generate
-- docker-compose exec app php artisan migrate
-
-can run now
-dockermachineip:8080
+# Without Docker
+- bash start.sh
+- php artisan serve --port=8080
+can run in localhost:8080
