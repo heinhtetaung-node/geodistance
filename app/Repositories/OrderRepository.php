@@ -44,6 +44,9 @@ class OrderRepository
 	 */
 	public function updateOrder($arr, $id){
 		$order = $this->model->findOrFail($id);
+		if($order->status == 'TAKEN'){
+			return "TAKEN";
+		}
 		$order = $order->update(['status' => 'TAKEN']);
 		return $order;
 	}

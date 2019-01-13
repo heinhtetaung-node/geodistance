@@ -62,6 +62,9 @@ class OrderController extends Controller
         if($res==true){
             return ['status' => 'SUCCESS'];    
         }
-        return ['error' => 'Someting wrong in data processing'];
+        if($res=="TAKEN"){
+            return response(['error' => 'Order is already taken'])->setStatusCode(422);
+        }
+        return response(['error' => 'Someting wrong in data processing'])->setStatusCode(422);
     }    
 }

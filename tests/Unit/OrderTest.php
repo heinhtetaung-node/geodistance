@@ -75,6 +75,18 @@ class OrderTest extends TestCase
         $this->assertEquals($updatedOrder->status, "TAKEN");
     }
 
+    public function testCannotTakeOrderMultiple()
+    {
+        $order = factory(Orders::class)->create();
+        $order->update(['status' => 'TAKEN']);
+        $data = [
+            'status' => 'TAKEN'
+        ];
+        $returndata = $this->patch(route('order.update', $order->id), $data);
+        $returndata->assertStatus(422);
+        $returndata->assertJson(['error' => 'Order is already taken']);   
+    }
+
     public function testTakeOrderWrongParameterValidation()
     {
         $order = factory(Orders::class)->create();
